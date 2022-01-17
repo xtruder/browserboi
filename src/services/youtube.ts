@@ -1,7 +1,6 @@
 import { Logger, PlatformContext } from "@tsed/common";
 import { Inject, Injectable, Value } from "@tsed/di";
-import { OnSignal } from "@tsed/terminus";
-import { Protocol, ProtocolLifeCycleEvent } from "puppeteer";
+import { ElementHandle, Protocol } from "puppeteer";
 
 import { Config } from "../types";
 import { BrowserService } from "./browser";
@@ -45,6 +44,95 @@ export class YoutubeService {
         "https://accounts.google.com/AccountChooser?service=wise&continue=https://youtube.com"
       );
     });
+  }
+
+  async addVideoToWatchLater(
+    ctx: PlatformContext,
+    url: string,
+    added: boolean
+  ): Promise<boolean> {
+    if (!this.cookies) {
+      throw new Error("missing youtube cookies");
+    }
+
+    const page = await this.browserService.browser.newPage();
+
+    try {
+      await page.setCookie(...this.cookies);
+
+      await page.goto(url, { waitUntil: "networkidle2" });
+
+      ctx.logger.info("page loaded, waiting 3 seconds");
+
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      const saveToPlaylistButton = await page.$<HTMLButtonElement>(
+        '[aria-label="Save to playlist"]'
+      );
+      if (!saveToPlaylistButton) {
+        throw new Error("save to playlist button not found");
+      }
+
+      ctx.logger.info("save to playlist button found, clicking it");
+
+      await saveToPlaylistButton.click();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const watchLaterText = await page.$<HTMLDivElement>(
+        '[aria-label="Watch later Private"]'
+      );
+      if (!watchLaterText) {
+        throw new Error("Watch later text not found");
+      }
+
+      // get a parent component
+      const parentComponent =
+        await watchLaterText.evaluateHandle<ElementHandle>(
+          (el) => el?.parentComponent
+        );
+
+      // find a checkbox by id
+      const checkboxEl = await parentComponent.$<HTMLInputElement>("#checkbox");
+      if (!checkboxEl) {
+        throw new Error("watch later checkbox not found");
+      }
+
+      const checkWatchLaterIsChecked = async () => {
+        // get check value
+        const isChecked = await checkboxEl.getProperty("checked");
+        return await isChecked.jsonValue();
+      };
+
+      // check if video is already added, don't click again
+      if ((await checkWatchLaterIsChecked()) === added) {
+        ctx.logger.info(
+          `video already ${
+            added ? "added to playlist" : "removed from playlist"
+          }`
+        );
+
+        await page.close();
+        return false;
+      }
+
+      // clieck on watch later to add video to playlist
+      await watchLaterText.click();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      if ((await checkWatchLaterIsChecked()) !== added) {
+        throw new Error("error adding video to watch later");
+      }
+
+      ctx.logger.info(
+        `video ${added ? "added to playlist" : "removed from playlist"}`
+      );
+
+      await page.close();
+      return true;
+    } catch (err) {
+      page.close();
+      throw err;
+    }
   }
 
   async likeVideo(
