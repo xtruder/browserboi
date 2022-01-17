@@ -1,0 +1,14 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.rulers": [
+      80,
+      120
+    ]
+  },
+  "files.exclude": {
+    "node_modules": true
+  },
+}

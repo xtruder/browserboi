@@ -1,0 +1,44 @@
+{
+  "name": "browserboi",
+  "version": "0.0.0",
+  "description": "Browser automation bot for various tasks",
+  "main": "./dist/index.js",
+  "bin": {
+    "browserboi": "bin/browserboi"
+  },
+  "scripts": {
+    "dev": "ts-node ./src/index.ts serve --youtube-cookies cookies.json",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jaka Hudoklin <jaka@x-truder.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.8",
+    "@types/which": "^2.0.1",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@godaddy/terminus": "^4.10.0",
+    "@tsed/ajv": "^6.98.0",
+    "@tsed/common": "^6.98.0",
+    "@tsed/core": "^6.98.0",
+    "@tsed/di": "^6.98.0",
+    "@tsed/exceptions": "^6.98.0",
+    "@tsed/json-mapper": "^6.98.0",
+    "@tsed/platform-express": "^6.98.0",
+    "@tsed/schema": "^6.98.0",
+    "@tsed/terminus": "^6.98.1",
+    "@types/multer": "^1.4.7",
+    "@types/yargs": "^17.0.8",
+    "express": "^4.17.2",
+    "puppeteer": "^13.0.1",
+    "puppeteer-extra": "^3.2.3",
+    "puppeteer-extra-plugin-stealth": "^2.9.0",
+    "typed-cli": "^1.2.0",
+    "yargs": "^17.3.1"
+  }
+}

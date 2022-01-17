@@ -1,0 +1,57 @@
+version: '3'
+services:
+  dev:
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    environment:
+      PRELOAD_EXTENSIONS: "arrterian.nix-env-selector"
+      DOCKER_HOST: tcp://localhost:2375
+      XDG_RUNTIME_DIR: /home/code/.run
+      WAYLAND_DISPLAY: wayland-0
+      DISPLAY: :0
+      MOZ_ENABLE_WAYLAND: "1"
+      GDK_BACKEND: wayland
+    shm_size: '2gb'
+    volumes:
+      - ..:/workspace:cached
+      - nix:/nix
+      - run:/home/code/.run
+      - /dev/shm:/dev/shm
+    security_opt:
+      - label:disable
+      - seccomp:unconfined
+    network_mode: "service:docker"
+
+  weston-rdp:
+    build:
+      context: https://github.com/xtruder/docker-images.git#:weston-rdp
+      dockerfile: Dockerfile.build
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    volumes:
+      - run:/run/weston
+    network_mode: "service:docker"
+
+  docker:
+    image: docker:dind-rootless
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+      DOCKER_DRIVER: overlay2
+    privileged: true
+    volumes:
+      - ..:/workspace:cached
+      - nix:/nix
+      - docker:/var/lib/docker
+    security_opt:
+      - label:disable
+    network_mode: bridge
+
+volumes:
+  nix:
+  run:
+  docker:
