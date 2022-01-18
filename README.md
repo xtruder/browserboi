@@ -2,7 +2,7 @@
 
 Headless browser automation service for things that we can't do with official APIs. Uses puppeter and chrome for browser automation.
 
-## Features
+## Bots
 
 - like youtube videos
 - add youtube videos to watch later
