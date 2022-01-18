@@ -98,7 +98,7 @@ and then use any rdp client to connect to it.
 
 ```bash
 npm version <major/minor/patch/>
-git push --tags
+git push origin --tags
 ```
 
 2. Release a new version via github
