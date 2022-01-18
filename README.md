@@ -79,12 +79,6 @@ curl -XPOST localhost:8080/api/youtube/likeVideo \
   -d '{"url": "https://www.youtube.com/watch?v=gCJxvpo0dxY", "liked": true}'
 ```
 
-### Obtaining youtube (google) cookies
-
-```
-```
-
-
 ## Development
 
 - Install google chrome or chromium
