@@ -42,7 +42,11 @@ docker run \
   ghcr.io/xtruder/browserboi:latest serve
 ```
 
-### Calling API
+### API
+
+Swagger API documentation is avalible on http://localhost:8080/docs.
+
+**Example API call:**
 
 ```bash
 curl -XPOST localhost:8080/api/youtube/watchLater \
