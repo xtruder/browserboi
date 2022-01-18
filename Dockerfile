@@ -3,7 +3,7 @@ FROM node:16 as builder
 WORKDIR /app
 ADD package.json package-lock.json /app/
 
-RUN PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install
+RUN PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm ci
 
 ADD . /app
 RUN npm run build
@@ -22,7 +22,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json /app/
 COPY bin /app/bin
-RUN PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install --production && npm install -g
+RUN PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm ci --production && npm install -g
 
 COPY --from=builder /app/dist /app/dist
 
