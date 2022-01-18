@@ -1,31 +1,46 @@
-# browserboi
+# browserboi :computer: :boy:
 
-Headless browser automation service for things that we can't do with official APIs
+Headless browser automation service for things that we can't do with official APIs. Uses puppeter and chrome for browser automation.
 
-## Services
+## Features
 
-### Youtube
+- like youtube videos
+- add youtube videos to watch later
 
-**Supported actions**
+## Usage
 
-- like youtube video
-- add youtube video to watch later playlist
+You can install package via npm or use a docker image
 
-**Setup**
+### Dependencies
 
-First you will need to obtain google cookies by running
+- nodejs >=16
+- google chrome or chromium
 
+### Installing package
+
+```bash
+npm install -g @xtruder/browserboi
 ```
-browserboi login-youtube --output cookies.json
-```
 
-## Running
+### Running
 
-```
+```bash
 browserboi serve --headless --youtube-cookies cookies.json --token <optional auto token>
 ```
 
 Starts a headless API on `localhost:8080` protected by bearer auth with provided token
+
+### Using docker image
+
+```bash
+docker run \
+  -e BROWSERBOI_HEADLESS=true \
+  -e BROWSERBOI_YOUTUBE_COOKIES=/app/cookies.json \
+  -e BROWSERBOI_TOKEN=<my secret token> \
+  -p 8080:8080 \
+  -v $PWD/cookies.json:/app/cookies.json \
+  ghcr.io/xtruder/browserboi:latest serve
+```
 
 ### Calling API
 
@@ -35,14 +50,36 @@ curl -XPOST localhost:8080/api/youtube/watchLater \
   -d '{"url": "https://www.youtube.com/watch?v=gCJxvpo0dxY", "added": true}'
 ```
 
+### Obtaining youtube tokens
+
+```
+browserboi login-youtube --chrome-path chromium --output cookies.json
+```
+
+This will open chromium with login screen, after you login it will
+dump cookies to `cookies.json`
+
 ## Development
 
-```
-npm install
-npm run dev
-```
+- Install google chrome or chromium
 
-This will start a development server on `localhost:8080`
+-Clone and install dependencies
+
+    ```bash
+    git clone https://github.com/xtruder/browserboi.git
+    npm install
+    ```
+
+- Obtain youtube access tokens
+
+    ```
+    browserboi login-youtube --chrome-path chromium --output cookies.json
+
+    ```
+
+-  `npm run dev`
+
+    This will start a chrome and development server on `localhost:8080`
 
 ### VsCode remote container
 
