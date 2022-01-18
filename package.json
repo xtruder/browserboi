@@ -14,6 +14,10 @@
   },
   "author": "Jaka Hudoklin <jaka@x-truder.net>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xtruder/browserboi.git"
+  },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.8",
