@@ -10,6 +10,7 @@
     "dev": "ts-node ./src/index.ts serve --youtube-cookies cookies.json",
     "build": "tsc",
     "login-google": "ts-node ./src/index.ts login-youtube --output cookies.json",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jaka Hudoklin <jaka@x-truder.net>",
