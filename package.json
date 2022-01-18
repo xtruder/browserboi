@@ -1,6 +1,6 @@
 {
   "name": "@xtruder/browserboi",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Browser automation bot for various tasks",
   "main": "./dist/index.js",
   "bin": {
