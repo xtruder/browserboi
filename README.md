@@ -63,7 +63,7 @@ dump cookies to `cookies.json`
 
 - Install google chrome or chromium
 
--Clone and install dependencies
+- Clone and install dependencies
 
     ```bash
     git clone https://github.com/xtruder/browserboi.git
@@ -74,7 +74,6 @@ dump cookies to `cookies.json`
 
     ```
     browserboi login-youtube --chrome-path chromium --output cookies.json
-
     ```
 
 -  `npm run dev`
@@ -88,6 +87,17 @@ wayland rdp server, to which you can connect and visually debug your automation.
 
 To connect to rdp server you need to first expose port 3389 from container usng vscode
 and then use any rdp client to connect to it.
+
+### Publish a new package
+
+1. Bump a version
+
+```bash
+npm version <major/minor/patch/>
+git push --tags
+```
+
+2. Release a new version via github
 
 ## Author
 
