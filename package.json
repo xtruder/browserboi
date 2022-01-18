@@ -1,5 +1,5 @@
 {
-  "name": "browserboi",
+  "name": "@xtruder/browserboi",
   "version": "0.1.0",
   "description": "Browser automation bot for various tasks",
   "main": "./dist/index.js",
