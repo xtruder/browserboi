@@ -62,6 +62,7 @@ yargs(process.argv.slice(2))
       yargs
         .options({
           "youtube-cookies": { type: "string", require: true },
+          token: { type: "string" },
         })
         .coerce({
           youtubeCookies: (f) => (existsSync(f) ? readFileSync(f, "utf-8") : f),
