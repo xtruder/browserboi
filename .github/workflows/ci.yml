@@ -6,11 +6,11 @@ on:
   push:
     branches:
       - "main"
-    tags:
-      - 'v*'
   pull_request:
     branches:
       - 'main'
+  release:
+    types: [created]
 
 jobs:
   docker:
@@ -48,3 +48,20 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  publish-npm-package:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'created'
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v2
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
