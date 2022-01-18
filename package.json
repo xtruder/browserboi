@@ -1,6 +1,6 @@
 {
   "name": "browserboi",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Browser automation bot for various tasks",
   "main": "./dist/index.js",
   "bin": {
