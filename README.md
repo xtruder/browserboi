@@ -2,10 +2,17 @@
 
 Headless browser automation service for things that we can't do with official APIs. Uses puppeter and chrome for browser automation.
 
-## Bots
+## About
+
+**Browserboi** is a service that provides browser automation
+using [puppeteer](https://github.com/puppeteer/puppeteer) and
+exposes http API for various tasks that are not exposed via
+official apis.
+
+### List of implemented automations
 
 - like youtube videos
-- add youtube videos to watch later
+- add youtube videos to watch later list
 
 ## Usage
 
@@ -25,10 +32,18 @@ npm install -g @xtruder/browserboi
 ### Running
 
 ```bash
-browserboi serve --headless --youtube-cookies cookies.json --token <optional auto token>
+browserboi serve --headless --youtube-cookies cookies.json
 ```
 
-Starts a headless API on `localhost:8080` protected by bearer auth with provided token
+This will Start a http API on `localhost:8080`.
+
+To obtain `cookies.json` you should run:
+
+```bash
+browserboi login-youtube --chrome-path chromium --output cookies.json
+```
+
+This will open chromium with google login screen, after you login it will dump cookies to `cookies.json`, which you can start a service.
 
 ### Using docker image
 
@@ -36,7 +51,7 @@ Starts a headless API on `localhost:8080` protected by bearer auth with provided
 docker run \
   -e BROWSERBOI_HEADLESS=true \
   -e BROWSERBOI_YOUTUBE_COOKIES=/app/cookies.json \
-  -e BROWSERBOI_TOKEN=<my secret token> \
+  -e BROWSERBOI_TOKEN=<my secret bearer token> \
   -p 8080:8080 \
   -v $PWD/cookies.json:/app/cookies.json \
   ghcr.io/xtruder/browserboi:latest serve
@@ -46,7 +61,9 @@ docker run \
 
 Swagger API documentation is avalible on http://localhost:8080/docs.
 
-**Example API call:**
+**Example API calls:**
+
+Adds youtube video to watch later list:
 
 ```bash
 curl -XPOST localhost:8080/api/youtube/watchLater \
@@ -54,14 +71,19 @@ curl -XPOST localhost:8080/api/youtube/watchLater \
   -d '{"url": "https://www.youtube.com/watch?v=gCJxvpo0dxY", "added": true}'
 ```
 
-### Obtaining youtube tokens
+Like youtube video:
+
+```bash
+curl -XPOST localhost:8080/api/youtube/likeVideo \
+  -H 'Authorization: Bearer <auth token>'
+  -d '{"url": "https://www.youtube.com/watch?v=gCJxvpo0dxY", "liked": true}'
+```
+
+### Obtaining youtube (google) cookies
 
 ```
-browserboi login-youtube --chrome-path chromium --output cookies.json
 ```
 
-This will open chromium with login screen, after you login it will
-dump cookies to `cookies.json`
 
 ## Development
 
